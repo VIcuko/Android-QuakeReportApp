@@ -1,23 +1,21 @@
 package com.example.android.quakereport;
 
-import java.util.Date;
-
 /**
  * Created by Vicuko on 2/8/17.
  */
 
 public class Earthquake {
-    int mMagnitude;
+    double mMagnitude;
     String mLocation;
-    Date mDate;
+    String mDate;
 
-    public Earthquake(int magnitude, String location, Date date){
+    public Earthquake(double magnitude, String location, String date){
         mMagnitude = magnitude;
         mLocation = location;
         mDate = date;
     }
 
-    public int getMagnitude(){
+    public double getMagnitude(){
         return mMagnitude;
     }
 
@@ -25,7 +23,8 @@ public class Earthquake {
         return mLocation;
     }
 
-    public Date getDate(){
+    public String getDate(){
         return mDate;
     }
+
 }
