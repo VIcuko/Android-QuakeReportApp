@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,15 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
         Earthquake earthquake = getItem(position);
 
+        TextView magnitude = (TextView) listView.findViewById(R.id.magnitude);
+        magnitude.setText(Double.toString(earthquake.getMagnitude()));
 
-        return super.getView(position, convertView, parent);
+        TextView location = (TextView) listView.findViewById(R.id.location);
+        location.setText(earthquake.getLocation());
+
+        TextView date = (TextView) listView.findViewById(R.id.date);
+        date.setText(earthquake.getDate());
+
+        return listView;
     }
 }
