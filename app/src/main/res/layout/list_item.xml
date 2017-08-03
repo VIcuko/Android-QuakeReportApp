@@ -16,37 +16,54 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
-        android:textSize="@dimen/item_text_size"
+        android:textSize="@dimen/location_text_size"
         tools:text="7.2" />
 
-    <TextView
-        android:id="@+id/location"
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:textSize="@dimen/item_text_size"
-        tools:text="San Francisco" />
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/secondary_text_color"
+            android:textSize="@dimen/item_text_size"
+            tools:text="64km North of" />
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/location_text_size"
+            android:textColor="@color/primary_text_color"
+            tools:text="San Francisco" />
+
+    </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/date"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
+            android:gravity="end"
+            android:textColor="@color/secondary_text_color"
             android:textSize="@dimen/item_text_size"
             tools:text="Feb 2, 2016" />
 
         <TextView
             android:id="@+id/time"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
+            android:gravity="end"
+            android:textColor="@color/secondary_text_color"
             android:textSize="@dimen/item_text_size"
             tools:text="10:45 AM" />
     </LinearLayout>

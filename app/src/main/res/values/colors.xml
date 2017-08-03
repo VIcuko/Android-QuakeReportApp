@@ -23,5 +23,8 @@
     <!-- Accent color of the app -->
     <color name="colorAccent">#10CAC9</color>
 
-    <color name="item_background">#CFD8DC</color>
+    <color name="item_background">#E0E0E0</color>
+
+    <color name="primary_text_color">#000000</color>
+    <color name="secondary_text_color">#54000000</color>
 </resources>

@@ -36,8 +36,11 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         TextView magnitude = (TextView) listView.findViewById(R.id.magnitude);
         magnitude.setText(Double.toString(earthquake.getMagnitude()));
 
+        TextView distance = (TextView) listView.findViewById(R.id.distance);
         TextView location = (TextView) listView.findViewById(R.id.location);
-        location.setText(earthquake.getLocation());
+        ArrayList<String> locationStrings = formatLocation(earthquake.getLocation());
+        distance.setText(locationStrings.get(0));
+        location.setText(locationStrings.get(1));
 
         TextView date = (TextView) listView.findViewById(R.id.date);
         String formattedDate = formatDate(earthquake.getDate());
@@ -62,5 +65,25 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
         String timeToDisplay = dateFormat.format(date);
         return timeToDisplay;
+    }
+
+    private ArrayList<String> formatLocation(String locationText){
+        ArrayList<String> newLocation = new ArrayList<String>();
+        String separator = getContext().getString(R.string.separator);
+        int divisorPosition = locationText.indexOf(separator);
+        String distance="";
+        String location="";
+        if (divisorPosition>0){
+            distance = locationText.substring(0,divisorPosition + separator.length() + 1);
+            location = locationText.substring(divisorPosition);
+        }
+        else{
+            distance = getContext().getString(R.string.location_initial_string);
+            location = locationText;
+        }
+        newLocation.add(distance);
+        newLocation.add(location);
+
+        return newLocation;
     }
 }

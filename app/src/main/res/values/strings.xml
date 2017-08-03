@@ -15,4 +15,6 @@
 -->
 <resources>
     <string name="app_name">Quake Report</string>
+    <string name="separator"> of </string>
+    <string name="location_initial_string">Near the</string>
 </resources>
