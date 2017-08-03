@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,7 +35,8 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         Earthquake earthquake = getItem(position);
 
         TextView magnitude = (TextView) listView.findViewById(R.id.magnitude);
-        magnitude.setText(Double.toString(earthquake.getMagnitude()));
+        String formattedMagnitude = formatMagnitude(earthquake.getMagnitude());
+        magnitude.setText(formattedMagnitude);
 
         TextView distance = (TextView) listView.findViewById(R.id.distance);
         TextView location = (TextView) listView.findViewById(R.id.location);
@@ -60,11 +62,10 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         return dateToDisplay;
     }
 
-    private String formatTime(long date){
-        Date dateObject = new Date(date);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
-        String timeToDisplay = dateFormat.format(date);
-        return timeToDisplay;
+    private String formatMagnitude (double magnitude){
+        DecimalFormat formatter = new DecimalFormat("0.0");
+        String newMagnitude = formatter.format(magnitude);
+        return newMagnitude;
     }
 
     private ArrayList<String> formatLocation(String locationText){
@@ -85,5 +86,12 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         newLocation.add(location);
 
         return newLocation;
+    }
+
+    private String formatTime(long date){
+        Date dateObject = new Date(date);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
+        String timeToDisplay = dateFormat.format(date);
+        return timeToDisplay;
     }
 }
