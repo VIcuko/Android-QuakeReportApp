@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Vicuko on 2/8/17.
@@ -38,8 +40,16 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         location.setText(earthquake.getLocation());
 
         TextView date = (TextView) listView.findViewById(R.id.date);
-        date.setText(earthquake.getDate());
+        String formattedDate = formatDate(earthquake.getDate());
+        date.setText(formattedDate);
 
         return listView;
+    }
+
+    private String formatDate(long date){
+        Date dateObject = new Date(date);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy\nh:mm a");
+        String dateToDisplay = dateFormat.format(date);
+        return dateToDisplay;
     }
 }
