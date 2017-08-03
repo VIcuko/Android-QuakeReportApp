@@ -43,13 +43,24 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         String formattedDate = formatDate(earthquake.getDate());
         date.setText(formattedDate);
 
+        TextView time = (TextView) listView.findViewById(R.id.time);
+        String formattedTime = formatTime(earthquake.getDate());
+        time.setText(formattedTime);
+
         return listView;
     }
 
     private String formatDate(long date){
         Date dateObject = new Date(date);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy\nh:mm a");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
         String dateToDisplay = dateFormat.format(date);
         return dateToDisplay;
+    }
+
+    private String formatTime(long date){
+        Date dateObject = new Date(date);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
+        String timeToDisplay = dateFormat.format(date);
+        return timeToDisplay;
     }
 }
