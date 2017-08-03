@@ -1,7 +1,9 @@
 package com.example.android.quakereport;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -32,11 +35,22 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listView = convertView;
-        if (listView == null){
-            listView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent,false);
+        if (listView == null) {
+            listView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
 
         Earthquake earthquake = getItem(position);
+        final String earthquakeUrl = earthquake.getUrl();
+
+        LinearLayout itemLayout = (LinearLayout) listView.findViewById(R.id.item_layout);
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSite(earthquakeUrl);
+            }
+        };
+
+        itemLayout.setOnClickListener(listener);
 
         TextView magnitude = (TextView) listView.findViewById(R.id.magnitude);
         String formattedMagnitude = formatMagnitude(earthquake.getMagnitude());
@@ -64,23 +78,31 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         return listView;
     }
 
-    private String formatDate(long date){
+    private void openSite(String url) {
+        Uri webpage = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+            getContext().startActivity(intent);
+        }
+    }
+
+    private String formatDate(long date) {
         Date dateObject = new Date(date);
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
         String dateToDisplay = dateFormat.format(date);
         return dateToDisplay;
     }
 
-    private String formatMagnitude (double magnitude){
+    private String formatMagnitude(double magnitude) {
         DecimalFormat formatter = new DecimalFormat("0.0");
         String newMagnitude = formatter.format(magnitude);
         return newMagnitude;
     }
 
-    private int getMagnitudeColor (double magnitude){
+    private int getMagnitudeColor(double magnitude) {
         int roundedMagnitude = (int) Math.floor(magnitude);
         int magnitudeColor;
-        switch (roundedMagnitude){
+        switch (roundedMagnitude) {
             case 0:
             case 1:
                 magnitudeColor = getColor(getContext(), R.color.magnitude1);
@@ -115,17 +137,16 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         return magnitudeColor;
     }
 
-    private ArrayList<String> formatLocation(String locationText){
+    private ArrayList<String> formatLocation(String locationText) {
         ArrayList<String> newLocation = new ArrayList<String>();
         String separator = getContext().getString(R.string.separator);
         int divisorPosition = locationText.indexOf(separator);
-        String distance="";
-        String location="";
-        if (divisorPosition>0){
-            distance = locationText.substring(0,divisorPosition + separator.length() + 1);
+        String distance = "";
+        String location = "";
+        if (divisorPosition > 0) {
+            distance = locationText.substring(0, divisorPosition + separator.length() + 1);
             location = locationText.substring(divisorPosition);
-        }
-        else{
+        } else {
             distance = getContext().getString(R.string.location_initial_string);
             location = locationText;
         }
@@ -135,7 +156,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         return newLocation;
     }
 
-    private String formatTime(long date){
+    private String formatTime(long date) {
         Date dateObject = new Date(date);
         SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
         String timeToDisplay = dateFormat.format(date);

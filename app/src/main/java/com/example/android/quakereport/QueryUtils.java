@@ -58,7 +58,9 @@ public final class QueryUtils {
                 String location = properties.getString("place");
                 long date = properties.getLong("time");
 
-                Earthquake earthquake = new Earthquake(magnitude, location, date);
+                String url = properties.getString("url");
+
+                Earthquake earthquake = new Earthquake(magnitude, location, date, url);
                 earthquakes.add(earthquake);
             }
 
