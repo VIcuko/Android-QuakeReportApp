@@ -43,25 +43,29 @@ public final class QueryUtils {
      */
     public static ArrayList<Earthquake> extractEarthquakes() {
 
-        // Create an empty ArrayList that we can start adding earthquakes to
         ArrayList<Earthquake> earthquakes = new ArrayList<>();
 
-        // Try to parse the SAMPLE_JSON_RESPONSE. If there's a problem with the way the JSON
-        // is formatted, a JSONException exception object will be thrown.
-        // Catch the exception so the app doesn't crash, and print the error message to the logs.
         try {
+            JSONObject jsonObj = new JSONObject(SAMPLE_JSON_RESPONSE);
 
-            // TODO: Parse the response given by the SAMPLE_JSON_RESPONSE string and
-            // build up a list of Earthquake objects with the corresponding data.
+            JSONArray features = jsonObj.getJSONArray("features");
+
+            for (int i = 0; i < features.length(); i++){
+                JSONObject earthquake_info = features.getJSONObject(i);
+                JSONObject properties = earthquake_info.getJSONObject("properties");
+
+                int magnitude = properties.getInt("mag");
+                String location = properties.getString("place");
+                String date = properties.getString("time").toString();
+
+                Earthquake earthquake = new Earthquake(magnitude, location, date);
+                earthquakes.add(earthquake);
+            }
 
         } catch (JSONException e) {
-            // If an error is thrown when executing any of the above statements in the "try" block,
-            // catch the exception here, so the app doesn't crash. Print a log message
-            // with the message from the exception.
             Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
         }
 
-        // Return the list of earthquakes
         return earthquakes;
     }
 
