@@ -78,7 +78,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
     }
 
     private int getMagnitudeColor (double magnitude){
-        int roundedMagnitude = (int) magnitude;
+        int roundedMagnitude = (int) Math.floor(magnitude);
         int magnitudeColor;
         switch (roundedMagnitude){
             case 0:
