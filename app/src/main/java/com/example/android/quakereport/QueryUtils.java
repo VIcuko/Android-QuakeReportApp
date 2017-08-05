@@ -10,8 +10,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import static com.example.android.quakereport.EarthquakeActivity.LOG_TAG;
@@ -37,6 +41,45 @@ public final class QueryUtils {
             Log.e(LOG_TAG, "Problem building the URL ", e);
         }
         return url;
+    }
+
+    private static String makeHttpRequest(URL url) throws IOException{
+        String jsonResponse = "";
+
+        if (url == null){
+            return jsonResponse;
+        }
+
+        HttpURLConnection urlConnection = null;
+        InputStream inputStream = null;
+
+        try{
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(10000 /* milliseconds */);
+            urlConnection.setConnectTimeout(15000 /* milliseconds */);
+            urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
+
+            if (urlConnection.getResponseCode() == 200){
+                inputStream = urlConnection.getInputStream();
+                jsonResponse = readFromStream(inputStream);
+            }
+            else{
+                Log.e(LOG_TAG,"Error response code: " + urlConnection.getResponseCode());
+            }
+        }
+        catch(IOException e){
+            Log.e(LOG_TAG, "Problem retrieving the earthquake JSON results.", e);
+        }
+        finally{
+            if (urlConnection != null){
+                urlConnection.disconnect();
+            }
+            if (inputStream != null) {
+                inputStream.close();
+            }
+        }
+        return jsonResponse;
     }
 
     /**
