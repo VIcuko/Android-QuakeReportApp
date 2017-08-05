@@ -10,15 +10,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import static com.example.android.quakereport.EarthquakeActivity.LOG_TAG;
+import static com.example.android.quakereport.QueryUtils.readFromStream;
 
 /**
  * Helper methods related to requesting and receiving earthquake data from USGS.
@@ -80,6 +83,20 @@ public final class QueryUtils {
             }
         }
         return jsonResponse;
+    }
+
+    private static String readFromStream (InputStream inputStream) throws IOException{
+        StringBuilder output = new StringBuilder();
+        if (inputStream != null) {
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+            String line = reader.readLine();
+            while (line != null) {
+                output.append(line);
+                line = reader.readLine();
+            }
+        }
+        return output.toString();
     }
 
     /**
