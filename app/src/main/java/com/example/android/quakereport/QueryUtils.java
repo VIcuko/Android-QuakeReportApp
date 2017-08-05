@@ -10,7 +10,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+
+import static com.example.android.quakereport.EarthquakeActivity.LOG_TAG;
 
 /**
  * Helper methods related to requesting and receiving earthquake data from USGS.
@@ -22,6 +26,17 @@ public final class QueryUtils {
      * directly from the class name QueryUtils (and an object instance of QueryUtils is not needed).
      */
     private QueryUtils() {
+    }
+
+    private static URL createUrl(String stringUrl){
+        URL url = null;
+        try {
+            url = new URL(stringUrl);
+        }
+        catch(MalformedURLException e){
+            Log.e(LOG_TAG, "Problem building the URL ", e);
+        }
+        return url;
     }
 
     /**
