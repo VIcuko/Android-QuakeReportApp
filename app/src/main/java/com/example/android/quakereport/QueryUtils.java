@@ -4,6 +4,7 @@ package com.example.android.quakereport;
  * Created by Vicuko on 3/8/17.
  */
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -21,7 +22,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import static com.example.android.quakereport.EarthquakeActivity.LOG_TAG;
-import static com.example.android.quakereport.QueryUtils.readFromStream;
 
 /**
  * Helper methods related to requesting and receiving earthquake data from USGS.
@@ -103,12 +103,16 @@ public final class QueryUtils {
      * Return a list of {@link Earthquake} objects that has been built up from
      * parsing a JSON response.
      */
-    public static ArrayList<Earthquake> extractEarthquakes() {
+    public static ArrayList<Earthquake> extractEarthquakes(String earthquakeJSON) {
+
+        if (TextUtils.isEmpty(earthquakeJSON)) {
+            return null;
+        }
 
         ArrayList<Earthquake> earthquakes = new ArrayList<>();
 
         try {
-            JSONObject jsonObj = new JSONObject(SAMPLE_JSON_RESPONSE);
+            JSONObject jsonObj = new JSONObject(earthquakeJSON);
 
             JSONArray features = jsonObj.getJSONArray("features");
 
