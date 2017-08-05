@@ -15,13 +15,17 @@
  */
 package com.example.android.quakereport;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
+
+    private static final String USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=6&limit=10";
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
@@ -43,4 +47,18 @@ public class EarthquakeActivity extends AppCompatActivity {
         // so the list can be populated in the user interface
         earthquakeListView.setAdapter(adapter);
     }
+
+    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List> {
+
+        @Override
+        protected List doInBackground(String... urls) {
+            return null;
+        }
+
+        protected void onPostExecute(List<Earthquake> data) {
+            super.onPostExecute(data);
+        }
+    }
 }
+
+
