@@ -20,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.android.quakereport.EarthquakeActivity.LOG_TAG;
 
@@ -35,47 +36,43 @@ public final class QueryUtils {
     private QueryUtils() {
     }
 
-    private static URL createUrl(String stringUrl){
+    private static URL createUrl(String stringUrl) {
         URL url = null;
         try {
             url = new URL(stringUrl);
-        }
-        catch(MalformedURLException e){
+        } catch (MalformedURLException e) {
             Log.e(LOG_TAG, "Problem building the URL ", e);
         }
         return url;
     }
 
-    private static String makeHttpRequest(URL url) throws IOException{
+    private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
 
-        if (url == null){
+        if (url == null) {
             return jsonResponse;
         }
 
         HttpURLConnection urlConnection = null;
         InputStream inputStream = null;
 
-        try{
+        try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(10000 /* milliseconds */);
             urlConnection.setConnectTimeout(15000 /* milliseconds */);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
-            if (urlConnection.getResponseCode() == 200){
+            if (urlConnection.getResponseCode() == 200) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
+            } else {
+                Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
-            else{
-                Log.e(LOG_TAG,"Error response code: " + urlConnection.getResponseCode());
-            }
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             Log.e(LOG_TAG, "Problem retrieving the earthquake JSON results.", e);
-        }
-        finally{
-            if (urlConnection != null){
+        } finally {
+            if (urlConnection != null) {
                 urlConnection.disconnect();
             }
             if (inputStream != null) {
@@ -85,7 +82,7 @@ public final class QueryUtils {
         return jsonResponse;
     }
 
-    private static String readFromStream (InputStream inputStream) throws IOException{
+    private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
@@ -116,7 +113,7 @@ public final class QueryUtils {
 
             JSONArray features = jsonObj.getJSONArray("features");
 
-            for (int i = 0; i < features.length(); i++){
+            for (int i = 0; i < features.length(); i++) {
                 JSONObject earthquake_info = features.getJSONObject(i);
                 JSONObject properties = earthquake_info.getJSONObject("properties");
 
@@ -134,6 +131,18 @@ public final class QueryUtils {
             Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
         }
 
+        return earthquakes;
+    }
+
+    public static List<Earthquake> fetchEarthquakeData(String requestUrl) {
+        URL url = createUrl(requestUrl);
+        String jsonResponse = null;
+        try {
+            jsonResponse = makeHttpRequest(url);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
+        }
+        List<Earthquake> earthquakes = extractEarthquakes(jsonResponse);
         return earthquakes;
     }
 
