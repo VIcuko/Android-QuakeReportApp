@@ -25,6 +25,8 @@ import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
+    private EarthquakeAdapter mAdapter;
+
     private static final String USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=6&limit=10";
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
@@ -34,29 +36,31 @@ public class EarthquakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        // Create a fake list of earthquakes.
-        ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes();
+        ArrayList<Earthquake> earthquakes = EarthquakeAsyncTask.execute(USGS_REQUEST_URL); ;
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
         // Create a new {@link ArrayAdapter} of earthquakes
-        EarthquakeAdapter adapter = new EarthquakeAdapter(this, earthquakes);
+        mAdapter = new EarthquakeAdapter(this, earthquakes);
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(adapter);
+        earthquakeListView.setAdapter(mAdapter);
     }
 
     private class EarthquakeAsyncTask extends AsyncTask<String, Void, List> {
 
         @Override
         protected List doInBackground(String... urls) {
-            return null;
+            return QueryUtils.extractEarthquakes(urls[0]);
         }
 
         protected void onPostExecute(List<Earthquake> data) {
-            super.onPostExecute(data);
+            mAdapter.clear();
+            if (data != null && !data.isEmpty()) {
+                mAdapter.addAll(data);
+            }
         }
     }
 }
