@@ -48,7 +48,7 @@ public class EarthquakeActivity extends AppCompatActivity {
         earthquakeAsyncTask.execute(USGS_REQUEST_URL);
     }
 
-    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List> {
+    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>> {
 
         @Override
         protected List doInBackground(String... urls) {
