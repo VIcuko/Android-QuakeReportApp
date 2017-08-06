@@ -143,6 +143,7 @@ public final class QueryUtils {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
         List<Earthquake> earthquakes = extractEarthquakes(jsonResponse);
+
         return earthquakes;
     }
 
