@@ -95,10 +95,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     }
 
     @Override
-    public Loader<List<Earthquake>> onCreateLoader(int i, Bundle bundle){
+    public Loader<List<Earthquake>> onCreateLoader(int i, Bundle bundle) {
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         String minMagnitude = sharedPrefs.getString(
                 getString(R.string.settings_min_magnitude_key),
                 getString(R.string.settings_min_magnitude_default));
