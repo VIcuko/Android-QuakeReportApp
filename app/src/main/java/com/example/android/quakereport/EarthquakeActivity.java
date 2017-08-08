@@ -42,7 +42,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     private TextView mEmptyStateTextView;
     private ProgressBar mProgressBar;
     private EarthquakeAdapter mAdapter;
-    private static final String USGS_REQUEST_URL = "http://earthquake.usgs.gov/fdsnws/event/1/query";
+    private static final String USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query";
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
     @Override
